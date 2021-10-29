@@ -36,7 +36,6 @@ const useStyles = makeStyles({
 
 const Registration = () => {
   const classes = useStyles();
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");

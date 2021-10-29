@@ -26,7 +26,6 @@ const useStyles = makeStyles({
     textTransform: "none",
     marginRight: "200px",
   },
-
   submitButton: {
     background: "#4285F4",
     margin: "30px 0px 20px",
@@ -67,7 +66,7 @@ const Signin = () => {
             </div>
 
             <Typography variant="h5" style={{ margin: "17px 0px 0px 190px" }}>
-              Sign in
+              Sign In
             </Typography>
 
             <Typography
