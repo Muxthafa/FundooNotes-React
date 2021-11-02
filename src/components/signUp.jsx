@@ -10,10 +10,11 @@ import {
   TextField,
 } from "@material-ui/core";
 
-import { Link } from "react-router-dom";
+import { Link , Redirect} from "react-router-dom";
 import image from "../assets/google_image.svg";
 import "../css/style.css";
 import { makeStyles } from "@material-ui/styles";
+import api from "../service/serviceApi";
 
 const useStyles = makeStyles({
   btn: {
@@ -36,35 +37,124 @@ const useStyles = makeStyles({
 
 const Registration = () => {
   const classes = useStyles();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
+
+  let userDetails = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPass: "",
+  };
+
+  let errorMessages = {
+    firstNameErrorMsg: "",
+    lastNameErrorMsg: "",
+    emailErrorMsg: "Use 8 or more characters",
+    passwordErrorMsg: "",
+  };
+
+  const [userState, setUserState] = useState(userDetails);
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [confirmError, setConfirmError] = useState(false);
+  const [confirmError, setPasswordConfirmError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(errorMessages)
   const [showPassword, setShowPassword] = useState(false);
+  const [redirect, setRedirect] = useState(false)
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleUserState = (event) => {
+    let { name, value } = event.target;
+    setUserState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const validate = () => {
+    let flagError = false;
+    const pattern = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$");
+    if (userState.firstName === "") {
+      setFirstNameError(true);
+      setErrorMessage((prev) => {
+        return {...prev, firstNameErrorMsg:"First name cannot be empty"}
+      })
+      flagError = true;
+    }
+    if (userState.lastName === "") {
+      setLastNameError(true);
+      setErrorMessage((prev) => {
+        return {...prev, lastNameErrorMsg:"Last name cannot be empty"}
+      })
+      flagError = true;
+    }
+    if (!pattern.test(userState.email)) {
+      setEmailError(true);
+      setErrorMessage((prev) => {
+        return {...prev, emailErrorMsg:"Email format does not match"}
+      })
+      flagError = true;
+    }
+    if (userState.email === "") {
+      setEmailError(true);
+      setErrorMessage((prev) => {
+        return {...prev, emailErrorMsg:"Email cannot be empty"}
+      })
+      flagError = true;
+    }
+    if (userState.password === "") {
+      setPasswordError(true);
+      setErrorMessage((prev) => {
+        return {...prev, passwordErrorMsg:"password cannot be empty"}
+      })
+      flagError = true;
+    }
+    if (userState.password !== userState.confirmPass) {
+      setPasswordConfirmError(true);
+      setErrorMessage((prev) => {
+        return {...prev, passwordErrorMsg:"password mismatch"}
+      })
+      flagError = true;
+    }
+    
+    if (flagError) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setFirstNameError(false);
     setLastNameError(false);
     setEmailError(false);
     setPasswordError(false);
-    setConfirmError(false);
-    if (firstName === "") setFirstNameError(true);
-    if (lastName === "") setLastNameError(true);
-    if (email === "") setEmailError(true);
-    if (password === "") setPasswordError(true);
-    if (password !== confirmPass) setConfirmError(true);
+    setPasswordConfirmError(false);
+    if (validate()) {  
+      let data = {
+        firstName: userState.firstName,
+        lastName: userState.lastName,
+        email: userState.email,
+        password: userState.password,
+      };
+      api.userRegister(data)
+        .then((res) => {
+          console.log(res);
+          setRedirect(true)
+        })
+        .catch((err) => console.log(err));
+    } else {
+      console.log(firstNameError + "dsad");
+      console.log("There is an error");
+    }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <Paper elevation={10} className="paperReg">
@@ -90,22 +180,23 @@ const Registration = () => {
             <div className="divName">
               <TextField
                 error={firstNameError}
-                name="firstname"
                 label="First name"
                 variant="outlined"
                 size="small"
-                helperText={firstNameError ? "First name cannot be empty" : ""}
-                onChange={(e) => setFirstName(e.target.value)}
+                helperText={firstNameError && errorMessage.firstNameErrorMsg}
+                name="firstName"
+                value={userState.firstName}
+                onChange={handleUserState}
               />
               <TextField
                 error={lastNameError}
                 label="Last name"
                 variant="outlined"
                 size="small"
-                onChange={(e) => {
-                  setLastName(e.target.value);
-                }}
-                helperText={lastNameError ? "Last name cannot be empty" : ""}
+                name="lastName"
+                value={userState.lastName}
+                onChange={handleUserState}
+                helperText={lastNameError && errorMessage.lastNameErrorMsg}
               />
             </div>
 
@@ -114,17 +205,14 @@ const Registration = () => {
               label="Username"
               variant="outlined"
               style={{ marginTop: "20px" }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">@gmail.com</InputAdornment>
-                ),
-              }}
+              placeholder="@gmail.com"
               fullWidth
               size="small"
-              onChange={(e) => setEmail(e.target.value)}
-              helperText={emailError ? "Email cannot be empty" : ""}
+              name="email"
+              value={userState.email}
+              onChange={handleUserState}
+              helperText={emailError && errorMessage.emailErrorMsg}
             />
-
             <Button className={classes.btn}>
               Use my current email address instead
             </Button>
@@ -137,11 +225,12 @@ const Registration = () => {
                 variant="outlined"
                 size="small"
                 type={showPassword ? "text" : "password"}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={userState.password}
+                onChange={handleUserState}
                 helperText={
                   passwordError
-                    ? "Password cannot be empty"
-                    : "Use 8 or more characters"
+                    && errorMessage.passwordErrorMsg
                 }
               />
               <TextField
@@ -150,10 +239,13 @@ const Registration = () => {
                 label="Confirm"
                 variant="outlined"
                 size="small"
-                onChange={(e) => setConfirmPass(e.target.value)}
-                helperText={confirmError ? "Password does not match" : ""}
+                name="confirmPass"
+                value={userState.confirmPass}
+                onChange={handleUserState}
+                helperText={confirmError && errorMessage.passwordErrorMsg}
               />
             </div>
+            
             <FormControlLabel
               control={<Checkbox />}
               label="Show password"
@@ -168,7 +260,6 @@ const Registration = () => {
               Sign in instead
             </Button>
             <Button
-              onClick={() => console.log("clicked me")}
               type="submit"
               variant="contained"
               className={classes.submitButton}
@@ -181,6 +272,7 @@ const Registration = () => {
           </Grid>
         </Grid>
       </Paper>
+      {redirect? <Redirect to="/login" /> : null}
     </form>
   );
 };

@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import "../css/style.css";
 import { makeStyles } from "@material-ui/styles";
+import api from "../service/serviceApi";
 
 const useStyles = makeStyles({
   btn: {
@@ -45,6 +46,20 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(email === "" || password === ""){
+      console.log("All details must be filled");
+    }else{
+      console.log("Valid");
+      let data = {
+        email,
+        password
+      }
+      api.userLogin(data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    }
   };
   return (
     <form onSubmit={handleSubmit}>
