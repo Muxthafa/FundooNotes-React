@@ -13,5 +13,17 @@ let post = (reqObj) => {
   })
 };
 
-export default {post}
+let get = (reqObj) => {
+  return axios({
+    method: reqObj.method,
+    url: reqObj.URL,
+    headers: reqObj.headers,
+  }).then((res) => {
+    return res
+  }).catch((err) => {
+    throw err
+  })
+};
+
+export default {post, get}
 

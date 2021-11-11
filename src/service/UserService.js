@@ -71,5 +71,8 @@ let resetPassword = (data, token) => {
       throw err
     });
 };
+
+
+
 export default {userRegister, userLogin, forgetPassword, resetPassword}
 

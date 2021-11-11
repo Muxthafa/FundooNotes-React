@@ -9,10 +9,11 @@ import {
   InputAdornment,
   TextField,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+
+import { Link, Redirect } from "react-router-dom";
 import "../css/style.css";
 import { makeStyles } from "@material-ui/styles";
-import api from "../service/serviceApi";
+import api from "../service/UserService";
 
 const useStyles = makeStyles({
   btn: {
@@ -32,25 +33,39 @@ const useStyles = makeStyles({
   },
 });
 
-const ForgotPassword = () => {
+const Signin = () => {
   const classes = useStyles();
 
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [redirect, setRedirect] = useState(false)
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(email === ""){
-      console.log("email must be filled");
+    if(email === "" || password === ""){
+      console.log("All details must be filled");
     }else{
       console.log("Valid");
       let data = {
-        email
+        email,
+        password
       }
-      api.forgetPassword(data)
+      api.userLogin(data)
         .then((res) => {
           console.log(res);
+          // localStorage.setItem('token', res.data.token)
+          sessionStorage.setItem('token',res.data.token)
+          setRedirect(true)
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err)
+          alert("Incorrect credentials")
+        });
     }
   };
   return (
@@ -72,8 +87,15 @@ const ForgotPassword = () => {
               <span style={{ color: "yellow" }}>s</span>
             </div>
 
-            <Typography variant="h5" style={{ margin: "17px 0px 0px 126px" }}>
-            Enter your email ID
+            <Typography variant="h5" style={{ margin: "17px 0px 0px 190px" }}>
+              Sign In
+            </Typography>
+
+            <Typography
+              variant="body1"
+              style={{ margin: "17px 0px 0px 115px" }}
+            >
+              Use your FundooNotes Account
             </Typography>
 
             <TextField
@@ -90,6 +112,28 @@ const ForgotPassword = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
 
+            <div className="divPassword">
+              <TextField
+                fullWidth
+                label="Password"
+                variant="outlined"
+                size="small"
+                type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Show password"
+              style={{ marginTop: "20px" }}
+              onClick={handleClickShowPassword}
+            />
+
+            <Button className={classes.signInButton} component={Link} to="/forgot-password">
+              Forgot password?
+            </Button>
+
             <Button className={classes.signInButton} component={Link} to="/">
               Create Account
             </Button>
@@ -99,13 +143,14 @@ const ForgotPassword = () => {
               variant="contained"
               className={classes.submitButton}
             >
-              Send
+              Login
             </Button>
           </Grid>
         </Grid>
       </Paper>
+      {redirect? <Redirect to="/notes" /> : null}
     </form>
   );
 };
 
-export default ForgotPassword;
+export default Signin;

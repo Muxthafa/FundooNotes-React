@@ -12,7 +12,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import "../css/style.css";
 import { makeStyles } from "@material-ui/styles";
-import api from "../service/serviceApi";
+import api from "../service/UserService";
 
 const useStyles = makeStyles({
   btn: {

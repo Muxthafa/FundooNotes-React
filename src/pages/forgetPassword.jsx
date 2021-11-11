@@ -9,11 +9,10 @@ import {
   InputAdornment,
   TextField,
 } from "@material-ui/core";
-
 import { Link } from "react-router-dom";
 import "../css/style.css";
 import { makeStyles } from "@material-ui/styles";
-import api from "../service/serviceApi";
+import api from "../service/UserService";
 
 const useStyles = makeStyles({
   btn: {
@@ -33,28 +32,21 @@ const useStyles = makeStyles({
   },
 });
 
-const Signin = () => {
+const ForgotPassword = () => {
   const classes = useStyles();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(email === "" || password === ""){
-      console.log("All details must be filled");
+    if(email === ""){
+      console.log("email must be filled");
     }else{
       console.log("Valid");
       let data = {
-        email,
-        password
+        email
       }
-      api.userLogin(data)
+      api.forgetPassword(data)
         .then((res) => {
           console.log(res);
         })
@@ -80,15 +72,8 @@ const Signin = () => {
               <span style={{ color: "yellow" }}>s</span>
             </div>
 
-            <Typography variant="h5" style={{ margin: "17px 0px 0px 190px" }}>
-              Sign In
-            </Typography>
-
-            <Typography
-              variant="body1"
-              style={{ margin: "17px 0px 0px 115px" }}
-            >
-              Use your FundooNotes Account
+            <Typography variant="h5" style={{ margin: "17px 0px 0px 126px" }}>
+            Enter your email ID
             </Typography>
 
             <TextField
@@ -105,24 +90,6 @@ const Signin = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <div className="divPassword">
-              <TextField
-                fullWidth
-                label="Password"
-                variant="outlined"
-                size="small"
-                type={showPassword ? "text" : "password"}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Show password"
-              style={{ marginTop: "20px" }}
-              onClick={handleClickShowPassword}
-            />
-
             <Button className={classes.signInButton} component={Link} to="/">
               Create Account
             </Button>
@@ -132,7 +99,7 @@ const Signin = () => {
               variant="contained"
               className={classes.submitButton}
             >
-              Login
+              Send
             </Button>
           </Grid>
         </Grid>
@@ -141,4 +108,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default ForgotPassword;

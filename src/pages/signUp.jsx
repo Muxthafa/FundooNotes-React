@@ -14,7 +14,7 @@ import { Link , Redirect} from "react-router-dom";
 import image from "../assets/google_image.svg";
 import "../css/style.css";
 import { makeStyles } from "@material-ui/styles";
-import api from "../service/serviceApi";
+import api from "../service/UserService";
 
 const useStyles = makeStyles({
   btn: {
@@ -24,9 +24,10 @@ const useStyles = makeStyles({
   },
   signInButton: {
     color: "#4285F4",
-    marginTop: "20px",
+    marginTop: "33px",
     textTransform: "none",
     marginRight: "200px",
+    textDecoration: "none"
   },
 
   submitButton: {
@@ -150,7 +151,6 @@ const Registration = () => {
         })
         .catch((err) => console.log(err));
     } else {
-      console.log(firstNameError + "dsad");
       console.log("There is an error");
     }
   };
@@ -252,13 +252,11 @@ const Registration = () => {
               style={{ marginTop: "20px" }}
               onClick={handleClickShowPassword}
             ></FormControlLabel>
-            <Button
-              className={classes.signInButton}
-              component={Link}
-              to="/login"
-            >
-              Sign in instead
-            </Button>
+            
+            <Link to="/login" className={classes.signInButton}>
+            Sign in instead
+            </Link>
+            
             <Button
               type="submit"
               variant="contained"
