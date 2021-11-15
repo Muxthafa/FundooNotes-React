@@ -4,18 +4,21 @@ import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import {
   List,
-  Divider,
   ListItem,
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+
+import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
+  
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -48,9 +51,8 @@ const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   width: drawerWidth,
-  flexShrink: 0,
+  flexShrink: 0, 
   whiteSpace: "nowrap",
-  boxSizing: "border-box",
   ...(open && {
     ...openedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
@@ -61,22 +63,36 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-function DrawerBar({ open }) {
+function DrawerBar({ open, handleTitle }) {
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader />
-      <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
+          <ListItem button style={{paddingBottom:"26px", paddingTop: "20px"}} onClick={() => handleTitle("Notes")}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <LightbulbOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary="reminders"/>
           </ListItem>
-        ))}
+          <ListItem button style={{paddingBottom:"26px"}} onClick={() => handleTitle("Reminders")}>
+            <ListItemIcon>
+              <EditOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Edit Label" />
+          </ListItem>
+          <ListItem button style={{paddingBottom:"26px"}}>
+            <ListItemIcon>
+              <ArchiveOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Archive"/>
+          </ListItem>
+          <ListItem button style={{paddingBottom:"26px"}}>
+            <ListItemIcon>
+              <DeleteOutlineOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Trash"/>
+          </ListItem>
       </List>
-      <Divider />
     </Drawer>
   );
 }

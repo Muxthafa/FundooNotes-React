@@ -6,7 +6,7 @@ export default function NotesCard({ note }) {
     <div>
       <Card>
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          <Typography sx={{ fontSize: 14 , fontWeight: "bold", color: "black"}} color="text.secondary" gutterBottom>
             {note.title}
           </Typography>
 

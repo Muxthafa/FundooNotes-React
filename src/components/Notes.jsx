@@ -3,17 +3,7 @@ import api from "../service/NoteService";
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 
-const Notes = () => {
-  const [notes, setNotes] = useState([]);
-  useEffect(() => {
-    let token = sessionStorage.getItem("token");
-    api
-      .noteFetch(token)
-      .then((res) => {
-        setNotes(res.data.Notes);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+const Notes = ({notes}) => {
 
   return (
     <Grid container spacing={3}>
