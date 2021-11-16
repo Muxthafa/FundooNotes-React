@@ -68,25 +68,25 @@ function DrawerBar({ open, handleTitle }) {
     <Drawer variant="permanent" open={open}>
       <DrawerHeader />
       <List>
-          <ListItem button style={{paddingBottom:"26px", paddingTop: "20px"}} onClick={() => handleTitle("Notes")}>
+          <ListItem button style={{paddingBottom:"26px", paddingTop: "20px"}} onClick={() => handleTitle("Reminders")}>
             <ListItemIcon>
               <LightbulbOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="reminders"/>
           </ListItem>
-          <ListItem button style={{paddingBottom:"26px"}} onClick={() => handleTitle("Reminders")}>
+          <ListItem button style={{paddingBottom:"26px"}} onClick={() => handleTitle("Edit Labels")}>
             <ListItemIcon>
               <EditOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Edit Label" />
           </ListItem>
-          <ListItem button style={{paddingBottom:"26px"}}>
+          <ListItem button style={{paddingBottom:"26px"}} onClick={() => handleTitle("Archive")}>
             <ListItemIcon>
               <ArchiveOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Archive"/>
           </ListItem>
-          <ListItem button style={{paddingBottom:"26px"}}>
+          <ListItem button style={{paddingBottom:"26px"}} onClick={() => handleTitle("Trash")}>
             <ListItemIcon>
               <DeleteOutlineOutlinedIcon />
             </ListItemIcon>

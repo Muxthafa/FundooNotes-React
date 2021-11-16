@@ -2,12 +2,13 @@ import NotesCard from "./NotesCard.jsx";
 import api from "../service/NoteService";
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import {useSelector} from 'react-redux'
 
-const Notes = ({notes}) => {
-
+const Notes = () => {
+  const myNotes= useSelector((state) => state.allNotes.filteredNotes)
   return (
     <Grid container spacing={3}>
-      {notes.map((note) => {
+      {myNotes.map((note) => {
         return (
           <Grid item>
             <NotesCard note={note} />

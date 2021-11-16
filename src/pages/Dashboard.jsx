@@ -6,6 +6,8 @@ import AppBar from "../components/AppBar.jsx";
 import Notes from "../components/Notes";
 import DrawerBar from "../components/Drawer";
 import api from "../service/NoteService";
+import { useDispatch } from "react-redux";
+import { setMyNotes } from "../redux/actions/noteAction.js";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -17,10 +19,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function MiniDrawer() {
   const [open, setOpen] = useState(false);
-  const [notes, setNotes] = useState([]);
-  const [search,setSearch] = useState("");
-  const [filteredNotes, setFilteredNotes] = useState([])
-  const [title,setTitle] = useState("")
+  const [title,setTitle] = useState("Notes")
+  const dispatch = useDispatch()
 
   const handleDrawerOpen = () => {
     setOpen((prev) => {
@@ -28,28 +28,15 @@ export default function MiniDrawer() {
     });
   };
 
-  const handleSearch = (searchTerm) => {
-    setSearch(searchTerm)
-  }
-
   useEffect(() => {
     let token = sessionStorage.getItem("token");
     api
       .noteFetch(token)
       .then((res) => {
-        console.log(res.data);
-        setNotes(res.data.Notes);
+        dispatch(setMyNotes(res.data.Notes))
       })
       .catch((err) => console.log(err));
   }, []);
-
-  useEffect(() => {
-    setFilteredNotes(
-      notes.filter((item) => {
-        return item.title.toLowerCase().includes(search.toLowerCase());
-      })
-    );
-  }, [search, notes]);
 
   const handleTitle = (title) => {
     setTitle(title)
@@ -59,11 +46,11 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" openDrawer={handleDrawerOpen} open={open} searchKeyword={handleSearch} title={title} />
+      <AppBar position="fixed" openDrawer={handleDrawerOpen} open={open} title={title} />
       <DrawerBar variant="permanent" open={open} handleTitle={handleTitle} />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop:"30px", marginLeft:"30px" }}>
         <DrawerHeader />
-        <Notes notes={filteredNotes}/>
+        <Notes />
       </Box>
     </Box>
   );

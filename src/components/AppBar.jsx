@@ -1,3 +1,4 @@
+import React , {useState, useEffect} from 'react'
 import MuiAppBar from "@mui/material/AppBar";
 import { Toolbar, TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -21,6 +22,10 @@ import {
 import NoteOutlinedIcon from '@mui/icons-material/NoteOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setFilteredNotes, setHomework } from "../redux/actions/noteAction";
+
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
   color: '#807774',
@@ -28,6 +33,28 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
 }));
 
 export default ({ openDrawer, searchKeyword, title }) => {
+  const [search, setSearch] = useState("");
+  const myNotes = useSelector((state) => state.allNotes.Notes);
+  const dispatch = useDispatch();
+
+  const handleSearch = (searchValue) => {
+    setSearch(searchValue);
+  };
+
+  useEffect(() => {
+    dispatch(
+      setFilteredNotes(
+        myNotes.filter((item) => {
+          return item.title.toLowerCase().includes(search.toLowerCase());
+        })
+      )
+    );
+  }, [search, myNotes]);
+
+  const handleClick = () => {
+    dispatch(setHomework("new note"))
+  }
+  
   return (
     <AppBar elevation={1}>
       <Toolbar>
@@ -50,41 +77,39 @@ export default ({ openDrawer, searchKeyword, title }) => {
           placeholder="Search…"
           style={{ width: "50%", margin: "auto 50px", backgroundColor: "#f5f5f5", border: "none"}}
           type="search"
-          size="small"
-          onChange={(e) => searchKeyword(e.target.value)}
+          onChange={(e) => handleSearch(e.target.value)}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <SearchIcon style={{ color: "black" }} />
               </InputAdornment>
             ),
-            style: { color: "black" },
+            style: { color: "black", height:"44px" },
           }}
         />
+        <button onClick={handleClick}>
+          press
+          </button>
         <List style={{display:"flex" , width:"63px"}}>
           <ListItem button>
             <ListItemIcon>
               <RefreshOutlinedIcon />
             </ListItemIcon>
-            <ListItemText />
           </ListItem>
           <ListItem button>
             <ListItemIcon>
               <SplitscreenOutlinedIcon />
             </ListItemIcon>
-            <ListItemText />
           </ListItem>
           <ListItem button>
             <ListItemIcon>
               <SettingsOutlinedIcon />
             </ListItemIcon>
-            <ListItemText />
           </ListItem>
           <ListItem button>
             <ListItemIcon>
               <NotificationsNoneOutlinedIcon />
             </ListItemIcon>
-            <ListItemText />
           </ListItem>
           <div
           style={{
