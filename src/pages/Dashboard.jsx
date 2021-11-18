@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { styled } from "@mui/material/styles";
 import { CssBaseline, Box } from "@mui/material";
@@ -8,6 +8,7 @@ import DrawerBar from "../components/Drawer";
 import api from "../service/NoteService";
 import { useDispatch } from "react-redux";
 import { setMyNotes } from "../redux/actions/noteAction.js";
+import CreateNote from '../components/CreateNote.jsx'
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -21,6 +22,7 @@ export default function MiniDrawer() {
   const [open, setOpen] = useState(false);
   const [title,setTitle] = useState("Notes")
   const dispatch = useDispatch()
+  const ref= useRef()
 
   const handleDrawerOpen = () => {
     setOpen((prev) => {
@@ -44,12 +46,12 @@ export default function MiniDrawer() {
   }
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex" }} >
       <CssBaseline />
       <AppBar position="fixed" openDrawer={handleDrawerOpen} open={open} title={title} />
       <DrawerBar variant="permanent" open={open} handleTitle={handleTitle} />
-      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop:"30px", marginLeft:"30px" }}>
-        <DrawerHeader />
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop:"80px", marginLeft:"30px" }}>
+        <CreateNote />
         <Notes />
       </Box>
     </Box>

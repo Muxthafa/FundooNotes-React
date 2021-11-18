@@ -12,9 +12,16 @@ export const setFilteredNotes = (notes) => {
     }
 }
 
-export const setHomework = (notes) => {
+export const setTask = (notes) => {
     return {
-        type: "SET_HOMEWORK",
+        type: "SET_TASK",
+        payload: notes,
+    }
+}
+
+export const setCreate = (notes) => {
+    return {
+        type: "SET_CREATE_NOTES",
         payload: notes,
     }
 }

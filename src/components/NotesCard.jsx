@@ -1,9 +1,8 @@
 import React from "react";
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography, Grid } from "@mui/material";
 
 export default function NotesCard({ note }) {
   return (
-    <div>
       <Card>
         <CardContent>
           <Typography sx={{ fontSize: 14 , fontWeight: "bold", color: "black"}} color="text.secondary" gutterBottom>
@@ -15,6 +14,5 @@ export default function NotesCard({ note }) {
           </Typography>
         </CardContent>
       </Card>
-    </div>
   );
 }

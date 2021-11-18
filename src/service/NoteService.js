@@ -18,4 +18,26 @@ let noteFetch = (token) => {
       });
 };
 
-export default {noteFetch}
+let setNotes = (data) => {
+  let token = sessionStorage.getItem("token");
+  let reqObj = {
+    method: "post",
+    URL: 'http://localhost:5000/notes',
+    headers: {
+      "Content-type": "application/json",
+      "authorization" : token
+    },
+    data:data
+  }
+  return axiosHelper.post(reqObj)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err
+    });
+};
+
+
+
+export default {noteFetch, setNotes}

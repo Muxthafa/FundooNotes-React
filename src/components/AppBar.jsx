@@ -1,6 +1,6 @@
 import React , {useState, useEffect} from 'react'
 import MuiAppBar from "@mui/material/AppBar";
-import { Toolbar, TextField, InputAdornment } from "@mui/material";
+import { Toolbar, TextField, InputAdornment, InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
@@ -24,7 +24,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setFilteredNotes, setHomework } from "../redux/actions/noteAction";
+import { setFilteredNotes, setTask } from "../redux/actions/noteAction";
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -50,10 +50,6 @@ export default ({ openDrawer, searchKeyword, title }) => {
       )
     );
   }, [search, myNotes]);
-
-  const handleClick = () => {
-    dispatch(setHomework("new note"))
-  }
   
   return (
     <AppBar elevation={1}>
@@ -73,23 +69,20 @@ export default ({ openDrawer, searchKeyword, title }) => {
         <Typography variant="h6" noWrap component="div">
           {title}
         </Typography>
-        <TextField
+        <InputBase
           placeholder="Search…"
-          style={{ width: "50%", margin: "auto 50px", backgroundColor: "#f5f5f5", border: "none"}}
+          style={{ width: "50%", margin: "auto 50px", backgroundColor: "#f5f5f5",  borderRadius: "10px 10px 10px 10px"}}
           type="search"
           onChange={(e) => handleSearch(e.target.value)}
-          InputProps={{
+          inputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <SearchIcon style={{ color: "black" }} />
               </InputAdornment>
             ),
-            style: { color: "black", height:"44px" },
+            style: { color: "black", height:"40px", paddingLeft:"10px", },
           }}
         />
-        <button onClick={handleClick}>
-          press
-          </button>
         <List style={{display:"flex" , width:"63px"}}>
           <ListItem button>
             <ListItemIcon>

@@ -13,12 +13,14 @@ import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 
+import "../css/style.css";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  
+  borderRight: "0px",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -31,6 +33,7 @@ const closedMixin = (theme) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  borderRight: "0px",
   overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
@@ -63,35 +66,52 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+const ListItems = styled(ListItem)`
+  &:hover {
+    background-color: #e6e8e6;
+  }
+  &:focus {
+    background-color: #f5cb90;
+  }
+  border-radius: 0 25px 25px 0;
+`;
+
+
 function DrawerBar({ open, handleTitle }) {
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader />
-      <List>
-          <ListItem button style={{paddingBottom:"26px", paddingTop: "20px"}} onClick={() => handleTitle("Reminders")}>
+      <List >
+          <ListItems button className="nav" onClick={() => handleTitle("Notes")}>
             <ListItemIcon>
               <LightbulbOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary="reminders"/>
-          </ListItem>
-          <ListItem button style={{paddingBottom:"26px"}} onClick={() => handleTitle("Edit Labels")}>
+            <ListItemText primary="Notes"/>
+          </ListItems>
+          <ListItems button className="nav" onClick={() => handleTitle("Reminders")}>
+            <ListItemIcon>
+            <NotificationsNoneOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Reminders"/>
+          </ListItems>
+          <ListItems button  onClick={() => handleTitle("Edit Labels")}>
             <ListItemIcon>
               <EditOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Edit Label" />
-          </ListItem>
-          <ListItem button style={{paddingBottom:"26px"}} onClick={() => handleTitle("Archive")}>
+          </ListItems>
+          <ListItems button  onClick={() => handleTitle("Archive")}>
             <ListItemIcon>
               <ArchiveOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Archive"/>
-          </ListItem>
-          <ListItem button style={{paddingBottom:"26px"}} onClick={() => handleTitle("Trash")}>
+          </ListItems>
+          <ListItems button  onClick={() => handleTitle("Trash")}>
             <ListItemIcon>
               <DeleteOutlineOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Trash"/>
-          </ListItem>
+          </ListItems>
       </List>
     </Drawer>
   );

@@ -10,7 +10,7 @@ const Notes = () => {
     <Grid container spacing={3}>
       {myNotes.map((note) => {
         return (
-          <Grid item>
+          <Grid item xs={12} sm={6} md={3}>
             <NotesCard note={note} />
           </Grid>
         );
