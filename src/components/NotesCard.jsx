@@ -1,9 +1,10 @@
 import React from "react";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Button } from "@mui/material";
 
-export default function NotesCard({ note }) {
+export default function NotesCard({ note,showNote, index }) {
+  
   return (
-      <Card>
+      <Card onClick={() => showNote(note,index)}>
         <CardContent>
           <Typography sx={{ fontSize: 14 , fontWeight: "bold", color: "black"}} color="text.secondary" gutterBottom>
             {note.title}

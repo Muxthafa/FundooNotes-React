@@ -25,3 +25,10 @@ export const setCreate = (notes) => {
         payload: notes,
     }
 }
+
+export const setUpdate = (note) => {
+    return {
+        type: "SET_UPDATE_NOTE",
+        payload: note,
+    }
+}

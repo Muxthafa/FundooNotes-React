@@ -42,12 +42,15 @@ function CreateNote() {
       content: details.content,
     };
     setDetails(noteDetails)
-    service
+    setVisibility(false)
+    if(data.title != "" && data.content !=""){
+      service
       .setNotes(data)
       .then((res) => {
-        dispatch(setCreate(data))
+        dispatch(setCreate(res.data.createdNote.Note))
       })
       .catch((err) => console.log(err));
+    }   
   };
 
   return (

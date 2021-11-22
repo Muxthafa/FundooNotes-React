@@ -75,7 +75,7 @@ export default ({ openDrawer, searchKeyword, title }) => {
           type="search"
           onChange={(e) => handleSearch(e.target.value)}
           inputProps={{
-            startAdornment: (
+            startadornment: (
               <InputAdornment position="start">
                 <SearchIcon style={{ color: "black" }} />
               </InputAdornment>

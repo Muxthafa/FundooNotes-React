@@ -22,6 +22,12 @@ export const noteReducer = (state=notes, {type,payload}) => {
         return {
             ...state, Notes: [...state.Notes, payload]
         };
+        case "SET_UPDATE_NOTE":
+            let newNote = [...state.Notes]
+            newNote[payload.index] = payload.data;
+        return {
+            ...state, Notes: newNote
+        };
         default:
             return state
     }
