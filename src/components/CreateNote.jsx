@@ -5,7 +5,7 @@ import { Paper, Grid , InputBase, Button} from "@mui/material";
 import service from '../service/NoteService'
 import {useSelector} from 'react-redux'
 import { useDispatch } from "react-redux";
-import { setCreate } from "../redux/actions/noteAction.js";
+import { setCreate } from "../actions/noteAction.js";
 
 const TextField = styled(MuiTextField)(({ theme }) => ({
   margin: "0px 0px 20px",
@@ -40,6 +40,7 @@ function CreateNote() {
     let data = {
       title: details.title,
       content: details.content,
+      isTrash: false
     };
     setDetails(noteDetails)
     setVisibility(false)

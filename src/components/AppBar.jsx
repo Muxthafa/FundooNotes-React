@@ -24,7 +24,7 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setFilteredNotes, setTask } from "../redux/actions/noteAction";
+import { setFilteredNotes, setTask } from "../actions/noteAction";
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,

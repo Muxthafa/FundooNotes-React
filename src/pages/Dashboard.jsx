@@ -7,8 +7,10 @@ import Notes from "../components/Notes";
 import DrawerBar from "../components/Drawer";
 import api from "../service/NoteService";
 import { useDispatch } from "react-redux";
-import { setMyNotes } from "../redux/actions/noteAction.js";
+import { setMyNotes, setTrash } from "../actions/noteAction.js";
 import CreateNote from '../components/CreateNote.jsx'
+import {useSelector} from 'react-redux'
+import Trash from '../components/Trash.jsx'
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -24,6 +26,8 @@ export default function MiniDrawer() {
   const dispatch = useDispatch()
   const ref= useRef()
 
+  const trash = useSelector((state) => state.allNotes.trashState);
+
   const handleDrawerOpen = () => {
     setOpen((prev) => {
       return !prev;
@@ -35,7 +39,8 @@ export default function MiniDrawer() {
     api
       .noteFetch(token)
       .then((res) => {
-        dispatch(setMyNotes(res.data.Notes))
+        dispatch(setMyNotes(res.data.Notes.filter((item) => !item.isTrash)))
+        dispatch(setTrash(res.data.Notes.filter((item) => item.isTrash)))
       })
       .catch((err) => console.log(err));
   }, []);
@@ -51,9 +56,9 @@ export default function MiniDrawer() {
       <AppBar position="fixed" openDrawer={handleDrawerOpen} open={open} title={title} />
       <DrawerBar variant="permanent" open={open} handleTitle={handleTitle} />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop:"80px", marginLeft:"30px" }}>
-        <CreateNote />
-        <Notes />
+      {trash == "true" ? <Trash /> : <> <CreateNote /> <Notes /> </> }
       </Box>
     </Box>
+    
   );
 }

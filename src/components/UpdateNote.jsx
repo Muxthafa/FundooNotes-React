@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import service from "../service/NoteService";
 import { useDispatch } from "react-redux";
-import { setUpdate } from "../redux/actions/noteAction.js";
+import { setUpdate } from "../actions/noteAction.js";
 
 const Wrap = styled(Paper)(({ theme }) => ({
   width: "45%",
@@ -25,6 +25,7 @@ export default function Popup({ popup, showNote, editNote }) {
   let noteDetails = {
     title: editNote.note.title,
     content: editNote.note.content,
+    isTrash: editNote.note.isTrash
   };
   const [details, setDetails] = useState(noteDetails);
 
@@ -40,6 +41,7 @@ export default function Popup({ popup, showNote, editNote }) {
     let data = {
       title: details.title,
       content: details.content,
+      isTrash: details.isTrash
     };
     
     if (data.title !== "" && data.content !== "") {
@@ -68,7 +70,6 @@ export default function Popup({ popup, showNote, editNote }) {
               fontWeight: "bold",
               fontSize: "25px",
             },
-            disableUnderline: true,
           }}
           elevation={3}
           fullWidth
@@ -84,7 +85,6 @@ export default function Popup({ popup, showNote, editNote }) {
           placeholder="Take a note..."
           inputProps={{
             style: { color: "black", height: "36px" },
-            disableUnderline: true,
           }}
           multiline={true}
           elevation={3}

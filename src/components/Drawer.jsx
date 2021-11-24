@@ -2,18 +2,17 @@ import React from "react";
 
 import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import { Link } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
+import { setTrashValue } from "../actions/noteAction.js";
 
 import "../css/style.css";
 const drawerWidth = 240;
@@ -54,7 +53,7 @@ const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   width: drawerWidth,
-  flexShrink: 0, 
+  flexShrink: 0,
   whiteSpace: "nowrap",
   ...(open && {
     ...openedMixin(theme),
@@ -76,42 +75,54 @@ const ListItems = styled(ListItem)`
   border-radius: 0 25px 25px 0;
 `;
 
-
-function DrawerBar({ open, handleTitle }) {
+function DrawerBar({ open, handleTitle, handleTrash }) {
+  const dispatch = useDispatch();
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader />
-      <List >
-          <ListItems button className="nav" onClick={() => handleTitle("Notes")}>
-            <ListItemIcon>
-              <LightbulbOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Notes"/>
-          </ListItems>
-          <ListItems button className="nav" onClick={() => handleTitle("Reminders")}>
-            <ListItemIcon>
+      <List>
+        <ListItems
+          button
+          className="nav"
+          onClick={() => {
+            dispatch(setTrashValue("false"));
+            handleTitle("Notes");
+          }}
+        >
+          <ListItemIcon>
+            <LightbulbOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Notes" />
+        </ListItems>
+        <ListItems
+          button
+          className="nav"
+          onClick={() => handleTitle("Reminders")}
+        >
+          <ListItemIcon>
             <NotificationsNoneOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Reminders"/>
-          </ListItems>
-          <ListItems button  onClick={() => handleTitle("Edit Labels")}>
-            <ListItemIcon>
-              <EditOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Edit Label" />
-          </ListItems>
-          <ListItems button  onClick={() => handleTitle("Archive")}>
-            <ListItemIcon>
-              <ArchiveOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Archive"/>
-          </ListItems>
-          <ListItems button  onClick={() => handleTitle("Trash")}>
-            <ListItemIcon>
-              <DeleteOutlineOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Trash"/>
-          </ListItems>
+          </ListItemIcon>
+          <ListItemText primary="Reminders" />
+        </ListItems>
+        <ListItems button onClick={() => handleTitle("Edit Labels")}>
+          <ListItemIcon>
+            <EditOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Edit Label" />
+        </ListItems>
+        <ListItems button onClick={() => handleTitle("Archive")}>
+          <ListItemIcon>
+            <ArchiveOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Archive" />
+        </ListItems>
+        <ListItems button onClick={() => {
+          dispatch(setTrashValue("true")); handleTitle("Trash")}}>
+          <ListItemIcon>
+            <DeleteOutlineOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Trash" />
+        </ListItems>
       </List>
     </Drawer>
   );
