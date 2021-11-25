@@ -40,6 +40,7 @@ function CreateNote() {
     let data = {
       title: details.title,
       content: details.content,
+      color: "#fafcfb",
       isTrash: false
     };
     setDetails(noteDetails)

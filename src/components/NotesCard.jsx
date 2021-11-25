@@ -8,18 +8,37 @@ import {
 } from "@mui/material";
 
 import PushPinIcon from "@mui/icons-material/PushPin";
-import NotesAction from './NotesAction.jsx'
+import NotesAction from "./NotesAction.jsx";
+import {useSelector} from 'react-redux'
+import Service from '../service/NoteService'
+import { useDispatch } from "react-redux";
+import {  } from "../actions/noteAction.js";
 
 export default function NotesCard({
   note,
   showNote,
   index,
   handleDelete,
-  handlePin,
 }) {
+
   const [icons, setIcons] = useState(false);
 
-  const [pin, setPin] = useState(false)
+  const [color, setColor] = useState(note.color);
+
+  const updateColor = (color) => {
+    let data = {
+      ...note,
+      color: color
+    };
+    setColor(color);
+    Service.setColor(data, note._id)
+          .then((res) => {
+            // dispatch(addTrashNote(res.data.Note));
+            console.log(res);
+          })
+          .catch((res) => console.log(res))
+  };
+
 
   return (
     <Card
@@ -30,18 +49,9 @@ export default function NotesCard({
         setIcons(false);
       }}
       elevation={icons ? 3 : 2}
+
+      style={{backgroundColor: color}}
     >
-      {icons ? (
-        <div style={{ height: "45px" }}>
-          <IconButton onClick={()=> setPin(prev => !prev)}>
-            <PushPinIcon size="small" sx={{ color: "grey" }} />
-          </IconButton>
-        </div>
-      ) : (
-        <div style={{ height: "35px", marginTop:"10px" }}>
-          {pin? <PushPinIcon size="small" sx={{ color: "black" }} /> : null}
-        </div>
-      )}
 
       <CardContent onClick={() => showNote(note, index)}>
         <Typography
@@ -57,7 +67,13 @@ export default function NotesCard({
         </Typography>
       </CardContent>
 
-      <NotesAction handleDelete={handleDelete} note={note} icons={icons} />
+      <NotesAction
+        handleDelete={handleDelete}
+        note={note}
+        icons={icons}
+        color={color}
+        setColor={updateColor}
+      />
     </Card>
   );
 }
