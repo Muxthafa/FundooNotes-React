@@ -119,14 +119,15 @@ let setColor = (data, id) => {
 
 
 let uploadImage = (data) => {
+  let token = sessionStorage.getItem("token");
   let reqObj = {
     method: "post",
     URL: 'http://localhost:5000/notes/image',
     data,
     headers: {
       "Content-type": "multipart/form-data",
+      "authorization" : token
     },
-    
   }
   console.log(reqObj);
   return axiosHelper.post(reqObj)

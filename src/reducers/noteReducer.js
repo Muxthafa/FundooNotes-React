@@ -4,6 +4,7 @@ const notes = {
   trash: [],
   pin: [],
   trashState: "false",
+  gridState: false,
   MyNotes: {
     Note: "First Note",
   },
@@ -77,6 +78,11 @@ export const noteReducer = (state = notes, { type, payload }) => {
       return {
         ...state,
         trashState: payload,
+      };
+    case "SET_VIEW":
+      return {
+        ...state,
+        gridState: !state.gridState,
       };
     default:
       return state;

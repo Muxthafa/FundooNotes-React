@@ -5,6 +5,7 @@ import {
   Typography,
   Button,
   IconButton,
+  CardMedia,
 } from "@mui/material";
 
 import PushPinIcon from "@mui/icons-material/PushPin";
@@ -20,6 +21,8 @@ export default function NotesCard({
   index,
   handleDelete,
 }) {
+
+  const myNotes = useSelector((state) => state.allNotes.filteredNotes);
 
   const [icons, setIcons] = useState(false);
 
@@ -53,7 +56,14 @@ export default function NotesCard({
       style={{backgroundColor: color}}
     >
 
+{note.image !=="" ? <CardMedia
+                    component="img"
+                    height="150px"
+                    image={`http://localhost:5000/${note.image}`}
+                    alt="dish"
+                  />:null}
       <CardContent onClick={() => showNote(note, index)}>
+      
         <Typography
           sx={{ fontSize: 17, fontWeight: "bold", color: "black" }}
           color="text.secondary"
@@ -73,6 +83,7 @@ export default function NotesCard({
         icons={icons}
         color={color}
         setColor={updateColor}
+        index={index}
       />
     </Card>
   );

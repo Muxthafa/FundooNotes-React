@@ -7,7 +7,7 @@ export default function Demo() {
 
   const handleFile = () => {
     var data = new FormData();
-    data.append("image", file);
+    data.append("file", file);
     Service.uploadImage(data)
       .then((res) => console.log(res))
       .catch((res) => console.log(res));

@@ -2,7 +2,7 @@ import * as React from "react";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import Buttons from "@mui/material/Button";
-import { Grid } from "@mui/material";
+import { Grid, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Circle from '@mui/icons-material/Circle';
 
@@ -10,8 +10,7 @@ import Circle from '@mui/icons-material/Circle';
 export default function ColorPopOver({ isOpen, onClose, anchorEl , onColorSelect}) {
   return (
     <div>
-      <Popover
-        
+      <Popover 
         open={isOpen}
         onClose={onClose}
         anchorEl={anchorEl}

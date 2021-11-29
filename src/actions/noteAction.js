@@ -75,4 +75,10 @@ export const removeTrashNote = (note) => {
     };
   };
 
+  export const GridView = () => {
+    return {
+      type: "SET_VIEW",
+    };
+  }
+
 
