@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  CardMedia,
 } from "@mui/material";
 import service from "../service/NoteService";
 import { useDispatch } from "react-redux";
@@ -20,12 +21,12 @@ const Wrap = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Popup({ popup, showNote, editNote }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   let noteDetails = {
     title: editNote.note.title,
     content: editNote.note.content,
-    isTrash: editNote.note.isTrash
+    isTrash: editNote.note.isTrash,
   };
   const [details, setDetails] = useState(noteDetails);
 
@@ -41,16 +42,16 @@ export default function Popup({ popup, showNote, editNote }) {
     let data = {
       title: details.title,
       content: details.content,
-      isTrash: details.isTrash
+      isTrash: details.isTrash,
     };
-    
+
     if (data.title !== "" && data.content !== "") {
       showNote();
       service
         .updateNote(data, editNote.note._id)
-        .then((res) => { 
+        .then((res) => {
           console.log(res);
-          dispatch(setUpdate({data: res.data.Note,index:editNote.index}));
+          dispatch(setUpdate({ data: res.data.Note, index: editNote.index }));
         })
         .catch((err) => console.log(err.message));
     }
@@ -58,6 +59,12 @@ export default function Popup({ popup, showNote, editNote }) {
 
   return (
     <Dialog onClose={showNote} open={popup}>
+      <CardMedia
+        component="img"
+        height="150px"
+        image={`http://localhost:5000/${editNote.note.image}`}
+        alt="Unavailable"
+      />
       <DialogTitle>
         <InputBase
           variant="standard"
@@ -82,10 +89,6 @@ export default function Popup({ popup, showNote, editNote }) {
       <DialogContent>
         <InputBase
           variant="standard"
-          placeholder="Take a note..."
-          inputProps={{
-            style: { color: "black", height: "36px" },
-          }}
           multiline={true}
           elevation={3}
           fullWidth

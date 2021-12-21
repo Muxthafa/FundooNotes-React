@@ -14,6 +14,7 @@ import {useSelector} from 'react-redux'
 import Service from '../service/NoteService'
 import { useDispatch } from "react-redux";
 import {  } from "../actions/noteAction.js";
+import "../css/style.css";
 
 export default function NotesCard({
   note,
@@ -52,7 +53,6 @@ export default function NotesCard({
         setIcons(false);
       }}
       elevation={icons ? 3 : 2}
-
       style={{backgroundColor: color}}
     >
 
@@ -60,9 +60,9 @@ export default function NotesCard({
                     component="img"
                     height="150px"
                     image={`http://localhost:5000/${note.image}`}
-                    alt="dish"
+                    alt="Unavailable"
                   />:null}
-      <CardContent onClick={() => showNote(note, index)}>
+      <CardContent onClick={() => showNote(note, index)} >
       
         <Typography
           sx={{ fontSize: 17, fontWeight: "bold", color: "black" }}
@@ -72,7 +72,7 @@ export default function NotesCard({
           {note.title}
         </Typography>
 
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        <Typography sx={{ mb: 1.5 }} color="text.secondary" className="cardContent">
           {note.content}
         </Typography>
       </CardContent>

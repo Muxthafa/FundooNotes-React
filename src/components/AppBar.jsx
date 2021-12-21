@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import MuiAppBar from "@mui/material/AppBar";
-import { Toolbar, TextField, InputAdornment, InputBase } from "@mui/material";
+import {
+  Toolbar,
+  TextField,
+  InputAdornment,
+  InputBase,
+  Popover,
+  Button,
+  Avatar,
+  Tooltip
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
@@ -25,6 +34,7 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setFilteredNotes, setTask, GridView } from "../actions/noteAction";
+import { Redirect } from "react-router";
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -33,7 +43,26 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
 }));
 
 export default ({ openDrawer, searchKeyword, title }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [logout,setLogout]= useState(false)
+
+  const handleLogout = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSignOut = () => {
+    sessionStorage.removeItem('token')
+    setLogout(true)
+  }
+
+  const open = Boolean(anchorEl);
+
   const [search, setSearch] = useState("");
+
   const myNotes = useSelector((state) => state.allNotes.Notes);
   const dispatch = useDispatch();
 
@@ -51,9 +80,15 @@ export default ({ openDrawer, searchKeyword, title }) => {
     );
   }, [search, myNotes]);
 
+  const email = sessionStorage.getItem('email')
+
   const handleGrid = () => {
     dispatch(GridView());
   };
+
+  const refreshPage = () => {
+    window.location.reload(false);
+  }
 
   return (
     <AppBar elevation={1}>
@@ -99,7 +134,7 @@ export default ({ openDrawer, searchKeyword, title }) => {
           }}
         />
         <List style={{ display: "flex", width: "63px" }}>
-          <ListItem button>
+          <ListItem button onClick={refreshPage}>
             <ListItemIcon>
               <RefreshOutlinedIcon />
             </ListItemIcon>
@@ -121,16 +156,27 @@ export default ({ openDrawer, searchKeyword, title }) => {
           </ListItem>
           <div
             style={{
-              border: "1px solid rgba(0, 0, 0, 0.54)",
-              borderRadius: "5px",
+              
               display: "flex",
               padding: "8px",
-              marginLeft: "25px",
+              marginLeft: "63px",
             }}
           >
-            <AccountCircleIcon fontSize="large" />
+            <Tooltip title={email}>
+            <Avatar onClick={handleLogout} >{email[0].toUpperCase()}</Avatar></Tooltip>
+            <Popover
+              open={open}
+              onClose={handleClose}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              
+            ><Button onClick={handleSignOut}>Logout</Button></Popover>
           </div>
         </List>
+        {logout? <Redirect to="/login" /> : null}
       </Toolbar>
     </AppBar>
   );
