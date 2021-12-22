@@ -1,0 +1,1 @@
+export const baseURL = "https://fundoo-node-application.herokuapp.com"

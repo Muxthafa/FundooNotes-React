@@ -1,9 +1,10 @@
 import axiosHelper from "../helper/axios";
+const url = require("../config/local");
 
 let userRegister = (data) => {
   let reqObj = {
     method: "post",
-    URL: 'http://localhost:5000/users',
+    URL: url.baseURL+'/users',
     headers: {
       "Content-type": "application/json",
     },
@@ -21,7 +22,7 @@ let userRegister = (data) => {
 let userLogin = (data) => {
   let reqObj = {
     method: "post",
-    URL: 'http://localhost:5000/users/login',
+    URL: url.baseURL+'/users/login',
     headers: {
       "Content-type": "application/json",
     },
@@ -39,7 +40,7 @@ let userLogin = (data) => {
 let forgetPassword = (data) => {
   let reqObj = {
     method: "post",
-    URL: 'http://localhost:5000/users/forgot-password',
+    URL: url.baseURL+'/users/forgot-password',
     headers: {
       "Content-type": "application/json",
     },
@@ -57,7 +58,7 @@ let forgetPassword = (data) => {
 let resetPassword = (data, token) => {
   let reqObj = {
     method: "post",
-    URL: `http://localhost:5000/users/reset/${token}`,
+    URL: url.baseURL+'/users/reset/'+`${token}`,
     headers: {
       "Content-type": "application/json",
     },
